@@ -4,7 +4,17 @@
 - name: Verify
   hosts: all
   gather_facts: false
+  vars:
+    python_version: 3.10.2
+    apt_cache_valid_time: 3600
+    modify_profiles: true
   tasks:
-  - name: Example assertion
-    ansible.builtin.assert:
-      that: true
+    - name: Look for the binary
+      ansible.builtin.stat:
+        path: ~/.pyenv/versions/{{ python_version }}/bin/python
+      register: python_path
+
+    - name: Make sure the binary exists
+      ansible.builtin.assert:
+        that:
+          - python_path.stat.exists

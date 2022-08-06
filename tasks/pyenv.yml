@@ -1,0 +1,58 @@
+---
+
+- name: Install requirement components to install pyenv
+  ansible.builtin.apt:
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+    name:
+      - curl
+      - git
+
+- name: Install pyenv
+  ansible.builtin.shell: set -o pipefail && curl https://pyenv.run | bash
+  args:
+    creates: "{{ ansible_user_dir }}/.pyenv/"
+    warn: false
+    executable: /bin/bash
+  register: pyenv_installed
+
+# This is a workaround for `git pull` always seeing a change.
+# pyenv.run does some things, as well as pulling down the git repo.  Updating
+# pyenv is as simple as updating the clone.  Hopefully the install script
+# doesn't change this.
+- name: Update pyenv
+  ansible.builtin.git:
+    repo: https://github.com/pyenv/pyenv.git
+    version: v2.3.3
+    dest: "{{ ansible_user_dir }}/.pyenv/"
+  register: git_result
+  changed_when: "git_result.after|default('after') != git_result.before|default('before')"
+
+- name: Pyenv Python versions
+  ansible.builtin.command: "{{ ansible_user_dir }}/.pyenv/bin/pyenv install {{ item }}"
+  args:
+    creates: "{{ ansible_user_dir }}/.pyenv/versions/{{ item }}/"
+  loop:
+    - "{{ python_version }}"
+
+- name: Default python version file
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.python-version"
+    content: "{{ python_version }}"
+    mode: 0755
+
+- name: pyenv profile setup
+  ansible.builtin.blockinfile:
+    marker: "# {mark} PYENV -- ANSIBLE MANAGED BLOCK"
+    path: "{{ item }}"
+    insertafter: EOF
+    create: true
+    mode: 0644
+    block: |
+      export PYENV_ROOT="{{ ansible_user_dir }}/.pyenv"
+      eval "$({{ ansible_user_dir }}/.pyenv/bin/pyenv init -)"
+      export PATH="{{ ansible_user_dir }}/.pyenv/bin:$PATH"
+      export PATH=$(pyenv root)/shims:$PATH
+  when: modify_profiles
+  loop:
+    - "{{ ansible_user_dir }}/.zprofile"
+    - "{{ ansible_user_dir }}/.profile"

@@ -1,7 +1,11 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: false
+  gather_facts: true
+  vars:
+    python_version: 3.10.2
+    apt_cache_valid_time: 3600
+    modify_profiles: true
   tasks:
     - name: "Include mtik00.pyenv"
       ansible.builtin.include_role:
