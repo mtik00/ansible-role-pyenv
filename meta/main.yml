@@ -17,5 +17,5 @@ galaxy_info:
   galaxy_tags: []
 
 dependencies:
-  - name: build_tools
-    src: https://github.com/mtik00/ansible-role-build-tools.git
+  - name: mtik00.build_tools
+    src: git+https://github.com/mtik00/ansible-role-build-tools.git
