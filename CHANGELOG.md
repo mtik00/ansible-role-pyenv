@@ -1,3 +1,9 @@
+## 0.2.2 (2022-08-21)
+
+### Refactor
+
+- change dependency names
+
 ## 0.2.1 (2022-08-07)
 
 ### Fix
