@@ -42,7 +42,7 @@
     content: "{{ python_version }}"
     mode: 0755
 
-- name: pyenv profile setup
+- name: Setup pyenv profile
   ansible.builtin.blockinfile:
     marker: "# {mark} PYENV -- ANSIBLE MANAGED BLOCK"
     path: "{{ item }}"
