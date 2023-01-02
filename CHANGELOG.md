@@ -1,3 +1,9 @@
+## 0.2.3 (2023-01-02)
+
+### Fix
+
+- molecule test requirements file
+
 ## 0.2.2 (2022-08-21)
 
 ### Refactor
