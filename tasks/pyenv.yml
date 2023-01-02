@@ -12,7 +12,6 @@
   ansible.builtin.shell: set -o pipefail && curl https://pyenv.run | bash
   args:
     creates: "{{ ansible_user_dir }}/.pyenv/"
-    warn: false
     executable: /bin/bash
   register: pyenv_installed
 
