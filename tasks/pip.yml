@@ -27,12 +27,14 @@
   args:
     chdir: /tmp
   when: (pip_check is failed)
+  changed_when: false
 
 - name: Install pip3
   ansible.builtin.command: python3 get-pip.py --user
   args:
     chdir: /tmp
   when: (pip3_check is failed)
+  changed_when: false
 
 - name: Clean up
   ansible.builtin.file:
