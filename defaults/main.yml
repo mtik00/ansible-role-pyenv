@@ -1,5 +1,5 @@
 ---
-python_version: 3.10.2
+python_version: 3.11.4
 apt_cache_valid_time: 3600
 
 # Add exports to `.profile` and `.zprofile` to handle pyenv in the shell.
