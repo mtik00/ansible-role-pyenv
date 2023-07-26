@@ -1,3 +1,9 @@
+## 0.3.0 (2023-07-26)
+
+### Feat
+
+- updating default python version
+
 ## 0.2.5 (2023-01-02)
 
 ### Fix
